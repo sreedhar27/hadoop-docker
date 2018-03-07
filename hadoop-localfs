@@ -1,0 +1,27 @@
+FROM openjdk:8-jdk-alpine
+LABEL author="sreedhar potturi"
+
+USER root
+
+#update and add prerequisites
+RUN apk update \
+    && apk add openssh rsync bash curl 
+
+#dont need this for local fs
+#openrc
+
+#optional i prefer to install in opt folder
+RUN mkdir /opt
+
+#Install hadoop
+ADD hadoop-2.7.5.tar.gz /opt/
+
+ENV PATH=/opt/hadoop-2.7.5/bin:$PATH
+ENV HADOOP_PREFIX=/opt/hadoop-2.7.5
+ENV HADOOP_HEAPSIZE=2048
+ENV HADOOP_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5000 $HADOOP_OPTS"
+
+#needed for psedu clster
+#RUN rc-update add sshd
+
+

@@ -1,0 +1,20 @@
+FROM sreedhar27/centos-java8
+LABEL author="sreedhar potturi"
+
+USER root
+
+#update and add prerequisites
+RUN yum -y install which openssh-server openssh-clients 
+
+
+#Install hadoop
+ADD hadoop-2.7.5.tar.gz /opt/
+ADD scripts/* /opt/hadoop-2.7.5/
+
+ENV JAVA_HOME=/usr/java/jdk1.8.0_161
+ENV PATH=/opt/hadoop-2.7.5/bin:$PATH
+ENV HADOOP_PREFIX=/opt/hadoop-2.7.5
+ENV HADOOP_HEAPSIZE=2048
+#ENV HADOOP_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5000 $HADOOP_OPTS"
+
+WORKDIR $HADOOP_PREFIX
